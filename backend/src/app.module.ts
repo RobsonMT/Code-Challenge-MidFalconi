@@ -25,6 +25,6 @@ export class AppModule implements OnModuleInit {
 
   async onModuleInit() {
     await this.seedService.run();
-    console.log('✅ Dados mockados inseridos com sucesso!');
+    console.log('Dados mockados inseridos com sucesso!');
   }
 }

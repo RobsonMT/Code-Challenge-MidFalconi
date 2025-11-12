@@ -26,7 +26,7 @@ export class UsersService {
 
       return await this.usersRepo.save(user);
     } catch (error) {
-      console.error('❌ Erro ao criar usuário:', error);
+      console.error('Erro ao criar usuário:', error);
       throw error;
     }
   }
