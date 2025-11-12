@@ -22,13 +22,12 @@ export default function UserForm() {
     isActive: true,
   });
 
-  // carrega profiles
   useEffect(() => {
     (async () => {
       try {
         const p = await getProfiles();
         setProfiles(p);
-        // se estiver criando e não tiver profile selecionado, seta o primeiro disponível
+
         if (!id && p.length > 0 && !form.profileId) {
           setForm((s) => ({ ...s, profileId: p[0].id }));
         }
@@ -40,7 +39,6 @@ export default function UserForm() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  // carrega usuário quando for editar
   useEffect(() => {
     if (!id) return;
     setLoading(true);
@@ -54,7 +52,7 @@ export default function UserForm() {
           profileId: user.profileId,
           isActive: user.isActive,
         });
-        // se profiles já carregaram e profileId for vazio, setar
+
         if (profiles.length > 0 && !user.profileId) {
           setForm((s) => ({ ...s, profileId: profiles[0].id }));
         }
@@ -72,7 +70,6 @@ export default function UserForm() {
     e.preventDefault();
     setLoading(true);
     try {
-      // validações mínimas
       if (!form.firstName || !form.lastName || !form.email || !form.profileId) {
         toast.error("Preencha todos os campos obrigatórios.");
         return;
@@ -120,7 +117,6 @@ export default function UserForm() {
           onChange={(e) => setForm({ ...form, email: e.target.value })}
         />
 
-        {/* SELECT de Profiles */}
         <div className="col-span-1 sm:col-span-2">
           <label className="block text-sm text-gray-600 mb-1">Perfil</label>
           <select
