@@ -1,0 +1,49 @@
+import { Injectable, NotFoundException } from '@nestjs/common';
+import { InjectRepository } from '@nestjs/typeorm';
+import { Repository } from 'typeorm';
+import { User } from './entities/user.entity';
+import { CreateUserDto } from './dto/create-user.dto';
+import { UpdateUserDto } from './dto/update-user.dto';
+
+@Injectable()
+export class UsersService {
+  constructor(
+    @InjectRepository(User)
+    private usersRepo: Repository<User>,
+  ) {}
+
+  create(dto: CreateUserDto) {
+    const entity = this.usersRepo.create(dto);
+    return this.usersRepo.save(entity);
+  }
+
+  findAll(filter?: { profileId?: string }) {
+    if (filter?.profileId) {
+      return this.usersRepo.find({ where: { profileId: filter.profileId } });
+    }
+    return this.usersRepo.find();
+  }
+
+  async findOne(id: string) {
+    const u = await this.usersRepo.findOneBy({ id });
+    if (!u) throw new NotFoundException('User not found');
+    return u;
+  }
+
+  async update(id: string, dto: UpdateUserDto) {
+    const u = await this.findOne(id);
+    Object.assign(u, dto);
+    return this.usersRepo.save(u);
+  }
+
+  async remove(id: string) {
+    const u = await this.findOne(id);
+    return this.usersRepo.remove(u);
+  }
+
+  async setActive(id: string, active: boolean) {
+    const u = await this.findOne(id);
+    u.isActive = active;
+    return this.usersRepo.save(u);
+  }
+}
