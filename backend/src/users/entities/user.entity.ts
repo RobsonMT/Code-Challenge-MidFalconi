@@ -21,7 +21,9 @@ export class User {
   @Column()
   profileId: string;
 
-  @ManyToOne(() => Profile, (profile) => profile.users, { eager: true })
+  @ManyToOne(() => Profile, (profile) => profile.users, {
+    eager: true,
+  })
   @JoinColumn({ name: 'profileId' })
   profile: Profile;
 }

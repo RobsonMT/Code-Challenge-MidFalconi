@@ -32,7 +32,7 @@ export class SeedService {
       firstName: 'Bob',
       lastName: 'Souza',
       email: 'bob@example.com',
-      isActive: false,
+      isActive: true,
       profileId: p2.id,
     });
     await this.users.save([u1, u2]);

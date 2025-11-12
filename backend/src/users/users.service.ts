@@ -4,6 +4,7 @@ import { Repository } from 'typeorm';
 import { User } from './entities/user.entity';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
+import { v4 as uuid } from 'uuid';
 
 @Injectable()
 export class UsersService {
@@ -12,9 +13,22 @@ export class UsersService {
     private usersRepo: Repository<User>,
   ) {}
 
-  create(dto: CreateUserDto) {
-    const entity = this.usersRepo.create(dto);
-    return this.usersRepo.save(entity);
+  async create(dto: CreateUserDto): Promise<User> {
+    try {
+      const user = this.usersRepo.create({
+        id: uuid(),
+        firstName: dto.firstName,
+        lastName: dto.lastName,
+        email: dto.email,
+        isActive: dto.isActive ?? true,
+        profileId: dto.profileId,
+      });
+
+      return await this.usersRepo.save(user);
+    } catch (error) {
+      console.error('❌ Erro ao criar usuário:', error);
+      throw error;
+    }
   }
 
   findAll(filter?: { profileId?: string }) {

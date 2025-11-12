@@ -10,6 +10,7 @@ export class ProfilesService {
   findAll() {
     return this.repo.find();
   }
+
   findOne(id: string) {
     return this.repo.findOneBy({ id });
   }
